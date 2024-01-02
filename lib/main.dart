@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_counter_cubit/cubits/counter/counter_cubit.dart';
+import 'package:my_counter_cubit/other_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,8 +32,29 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<CounterCubit, CounterState>(
-        builder: (context, state) {
+      body: BlocConsumer<CounterCubit, CounterState>(
+        listener: (BuildContext context, CounterState state) {
+          if (state.counter == 3) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Text('counter is ${state.counter}'),
+                );
+              },
+            );
+          } else if (state.counter == -1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return OtherPage();
+                },
+              ),
+            );
+          }
+        },
+        builder: (BuildContext context, CounterState state) {
           return Center(
             child: Text(
               '${state.counter}',
@@ -46,6 +68,44 @@ class MyHomePage extends StatelessWidget {
           );
         },
       ),
+      // body: BlocListener<CounterCubit, CounterState>(
+      //   listener: (context, state) {
+      //     if (state.counter == 3) {
+      //       showDialog(
+      //         context: context,
+      //         builder: (context) {
+      //           return AlertDialog(
+      //             content: Text('counter is ${state.counter}'),
+      //           );
+      //         },
+      //       );
+      //     } else if (state.counter == -1) {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (context) {
+      //             return OtherPage();
+      //           },
+      //         ),
+      //       );
+      //     }
+      //   },
+      //   child: BlocBuilder<CounterCubit, CounterState>(
+      //     builder: (context, state) {
+      //       return Center(
+      //         child: Text(
+      //           '${state.counter}',
+      //           // '${BlocProvider
+      //           //     .of<CounterCubit>(
+      //           //   context,
+      //           //   listen: true,
+      //           // ).state.counter}',
+      //           style: TextStyle(fontSize: 52.0),
+      //         ),
+      //       );
+      //     },
+      //   ),
+      // ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
