@@ -31,11 +31,20 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          '${BlocProvider.of<CounterCubit>(context).state.counter}',
-          style: TextStyle(fontSize: 52.0),
-        ),
+      body: BlocBuilder<CounterCubit, CounterState>(
+        builder: (context, state) {
+          return Center(
+            child: Text(
+              '${state.counter}',
+              // '${BlocProvider
+              //     .of<CounterCubit>(
+              //   context,
+              //   listen: true,
+              // ).state.counter}',
+              style: TextStyle(fontSize: 52.0),
+            ),
+          );
+        },
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
