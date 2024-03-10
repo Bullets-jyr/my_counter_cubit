@@ -32,6 +32,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // BlocConsumer = BlocListener + BlocBuilder
       body: BlocConsumer<CounterCubit, CounterState>(
         listener: (BuildContext context, CounterState state) {
           if (state.counter == 3) {
@@ -92,9 +93,11 @@ class MyHomePage extends StatelessWidget {
       //   },
       //   child: BlocBuilder<CounterCubit, CounterState>(
       //     builder: (context, state) {
+      //  여기서는 다이얼로그 또는 네비게이션 등의 onetime 액션을 수행하면 안됩니다.
       //       return Center(
       //         child: Text(
       //           '${state.counter}',
+      //           // BlocBuilder를 사용하면 '${BlocProvider.of<CounterCubit>(context, listen: true,).state.counter}'는 필요가 없어집니다.
       //           // '${BlocProvider
       //           //     .of<CounterCubit>(
       //           //   context,
@@ -112,6 +115,11 @@ class MyHomePage extends StatelessWidget {
           FloatingActionButton(
             onPressed: () {
               // BlocProvider.of<CounterCubit>(context).increment();
+
+              // error
+              // BlocProvider.of<CounterCubit>(context, listen: true).increment();
+
+              // extension method
               context.read<CounterCubit>().increment();
             },
             child: Icon(Icons.add),
@@ -121,6 +129,12 @@ class MyHomePage extends StatelessWidget {
           FloatingActionButton(
             onPressed: () {
               // BlocProvider.of<CounterCubit>(context).decrement();
+
+              // error
+              // BlocProvider.of<CounterCubit>(context, listen: true).decrement();
+
+              // extension method
+              // context.watch<CounterCubit>().decrement();
               context.read<CounterCubit>().decrement();
             },
             child: Icon(Icons.remove),
